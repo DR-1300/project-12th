@@ -7,5 +7,7 @@ load_dotenv()
 sqluser = os.getenv('user')
 sqlpassword = os.getenv('password')
 
-mysql1 = mysql.connector.connect(host="localhost", user= sqluser , password=sqlpassword, use_pure= True)
+mysql1 = mysql.connector.connect(host="localhost", user= sqluser , password=sqlpassword, use_pure= True, database="Hospital")
+c = mysql1.cursor()
+
 print(mysql1)
