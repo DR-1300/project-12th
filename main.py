@@ -35,16 +35,15 @@ def login():
             break
 def add_parking_slot_record():
     clear()
-    parking_type_id = input('Enter The Parking Type(1) Two Wheelar 2) Car 3) Bus 4) Truck 5) Trolly):')
+    parking_type_id = input('Enter The Parking Type Number (1) Two Wheelar 2) Car 3) Bus 4) Truck 5) Trolly):')
     status = input('Enter The Current Status(Open/Full);')
-    sql = 'insert into parking_space(type_id,status) values\("{}","{}");'.format(parking_type_id,status)
+    sql = 'insert into parking_space(type_id,status) values({},"{}");'.format(parking_type_id,status)
     cursor.execute(sql)
     conn.commit()
     print('\n\n The New Parking Space Record has been added......!')
     cursor.execute('select max(id) from parking_space;')
     no = cursor.fetchone()
     print('Your Parking ID is:{}\n\n\n'.format(no[0]))
-    display_parking_type_records()
     wait = input('\n\n\nReady? Press any key to countinue....')
 
 def add_parking_type_record():
@@ -60,6 +59,19 @@ def add_parking_type_record():
     print('New Parking Type ID is:{}\n\n\n'.format(no[0]))
     wait = input('\n\n\nPress any key to continue.........')
 
+def add_new_vehicle():
+    clear()
+    print('Vehicle Login Screen')
+    print('-'*100)
+    vehicle_id = input('Enter Vehicle Number :')
+    parking_id = input('Enter parking ID :')
+    entry_date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+    sql = 'insert into transaction(vehicle_id,parking_id,entry_date) values ("{}",{},"{}");'.format(vehicle_id,parking_id,entry_date)
+    cursor.execute(sql)
+    cursor.execute('update parking_space set status="full" where id={}'.format(parking_id))
+    print('\n\n\n Record has been added successfully.......!')
+    wait = input('\n\n\nReady?Now press any key to countinue.....')
+    conn.commit()
 
 def main_menu():
     clear()
@@ -71,7 +83,8 @@ def main_menu():
         print('1. Add Parking Type Record')
         print('2. Add Parking Slot Record')
         print('3. Display Parking Type Records')
-        print('4. Exit')
+        print('4. Add New Vehicle')
+        print('5. Exit')
         choice = input('Enter your choice: ')
         
         if choice == '1':
@@ -82,7 +95,11 @@ def main_menu():
             display_parking_type_records()
             input('\n\nPress any key to continue...')
         elif choice == '4':
-            print('Exiting the system...')
+            add_new_vehicle()
+        elif choice == '5':
+            print('Exiting the system. Goodbye!')
+            cursor.close()
+            conn.close()
             break
         else:
             print('Invalid choice, please try again.')
