@@ -1,4 +1,4 @@
-# Parkking system 
+# A parking management system made by me :p
 import mysql.connector
 import time
 from datetime import datetime
@@ -39,7 +39,7 @@ def vehicle_enter():
     entry_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     if vehicle_type not in [1,2,3]:
-        print("Invalid vehicle type.")
+        print("Invalid vehicle type.") 
         return
     cursor.execute("SELECT COUNT(*) FROM log WHERE exited_at IS NULL")
     coun = cursor.fetchone()[0]
@@ -53,7 +53,7 @@ def vehicle_enter():
         conn.commit()
         cursor.execute("SELECT parking_id FROM log WHERE vehicle_id = %s AND entered_at = %s", (vehicle_no, entry_time))
         parking_id = cursor.fetchone()[0]
-        print(f"Vehicle {vehicle_no} of type {vehicle_type} entered at {entry_time}.")
+        print(f"Vehicle {vehicle_no} of type {vehicle_type} entered at {entry_time}.\n Parking ID: {parking_id}")
         cursor.execute("SELECT slot_id FROM parking_slots WHERE status = 'empty' LIMIT 1")
         slot = cursor.fetchone()
         cursor.execute("UPDATE parking_slots SET status = 'occupied', vehicle_id = %s, parking_id = %s WHERE slot_id = %s", (vehicle_no, parking_id, slot[0]))
@@ -97,6 +97,12 @@ def vehicle_exit():
         "UPDATE statistics SET total_money = total_money + %s, total_vehicles_ever = total_vehicles_ever + 1 WHERE total_slots = 10",
         (fee,)
     )
+    conn.commit()
+    cursor.execute(
+        "UPDATE parking_slots SET status = 'empty', vehicle_id = NULL, parking_id = NULL WHERE parking_id = %s",
+        (parking_id,)
+    )
+    conn.commit()
 
     print(f"Vehicle of type {vehicle_type} exited at {exit_time}.")
     print(f"Duration: {hours_stayed} hour(s), Fee: ₹{fee}")
