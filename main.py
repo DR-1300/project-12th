@@ -23,11 +23,13 @@ def login():
         rows = cursor.rowcount
         if rows != 1:
             print('Invalid username or password. Please try again')
-        else:
+        elif rows==1:
             print('Welcome :) you now have access to operate this system!')
             print('\n\n\n')
             print('Please press the "Enter Key" to continue')
             break
+        else:
+            print("somethings wrong i can feel it")
 
 
 def vehicle_enter():
@@ -94,7 +96,7 @@ def vehicle_exit():
     conn.commit()
 
     cursor.execute(
-        "UPDATE statistics SET total_money = total_money + %s, total_vehicles_ever = total_vehicles_ever + 1 WHERE total_slots = 10",
+        "UPDATE statistics SET total_money = total_money + %s WHERE total_slots = 10",
         (fee,)
     )
     conn.commit()
