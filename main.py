@@ -59,6 +59,7 @@ def vehicle_enter():
         cursor.execute("SELECT slot_id FROM parking_slots WHERE status = 'empty' LIMIT 1")
         slot = cursor.fetchone()
         cursor.execute("UPDATE parking_slots SET status = 'occupied', vehicle_id = %s, parking_id = %s WHERE slot_id = %s", (vehicle_no, parking_id, slot[0]))
+        conn.commit()
     input("Press Enter to return to the main menu...")
 def vehicle_exit():
     clear()
