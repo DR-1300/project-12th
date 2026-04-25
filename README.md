@@ -28,4 +28,4 @@ This project was engineered with a focus on how software interacts with data sto
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/DR-1300/your-repo-name.git](https://github.com/DR-1300/your-repo-name.git)
+   git clone [https://github.com/DR-1300/project-12th.git](https://github.com/DR-1300/project-12th.git)
