@@ -1,11 +1,12 @@
-# A parking management system made by me :p
 import mysql.connector
 import time
 from datetime import datetime
 
 global conn,cursor
 
-conn = mysql.connector.connect(host='localhost', user='root',password='mysql123',database='parking_system')
+conn = mysql.connector.connect(
+    host='localhost', user='root',password='mysql123',database='parking_system'
+    )
 
 
 cursor = conn.cursor()
@@ -29,7 +30,7 @@ def login():
             print('Please press the "Enter Key" to continue')
             break
         else:
-            print("somethings wrong i can feel it")
+            print("Error, please try again.")
 
 
 def vehicle_enter():
@@ -61,6 +62,7 @@ def vehicle_enter():
         cursor.execute("UPDATE parking_slots SET status = 'occupied', vehicle_id = %s, parking_id = %s WHERE slot_id = %s", (vehicle_no, parking_id, slot[0]))
         conn.commit()
     input("Press Enter to return to the main menu...")
+    
 def vehicle_exit():
     clear()
     print("Vehicle Exit")
@@ -121,7 +123,6 @@ def show_statistics():
         total_money, total_vehicles = stats
     else:
         total_money, total_vehicles = 0, 0
-
     cursor.execute("SELECT COUNT(*) FROM log WHERE exited_at IS NULL AND entered_at IS NOT NULL")
     current_vehicles = cursor.fetchone()[0]
     print(f"Total Money Collected: ₹{total_money}")
@@ -162,9 +163,7 @@ def slot_status():
 def main_menu():
     clear()
     login()
-    clear()
     while True: 
-        clear()
         print('PARKING MANAGEMENT SYSTEM')
         print('*' * 100)
         print("\n1. Vehicle entered")
